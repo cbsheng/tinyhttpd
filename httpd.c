@@ -514,6 +514,7 @@ int startup(u_short *port)
  //htons()，ntohs() 和 htonl()包含于<arpa/inet.h>, 参读《TLPI》P1199
  //将*port 转换成以网络字节序表示的16位整数
  name.sin_port = htons(*port);
+ //INADDR_ANY是一个 IPV4通配地址的常量，大多实现都将其定义成了0.0.0.0 参读《TLPI》P1187
  name.sin_addr.s_addr = htonl(INADDR_ANY);
  
  //bind()用于绑定地址与 socket。参读《TLPI》P1153
