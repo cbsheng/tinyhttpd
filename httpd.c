@@ -501,6 +501,7 @@ void serve_file(int client, const char *filename)
 int startup(u_short *port)
 {
  int httpd = 0;
+ //sockaddr_in 是 IPV4的套接字地址结构。定义在<netinet/in.h>,参读《TLPI》P1202
  struct sockaddr_in name;
  
  //socket()用于创建一个用于 socket 的描述符，函数包含于<sys/socket.h>。参读《TLPI》P1153
@@ -514,7 +515,8 @@ int startup(u_short *port)
  //htons()，ntohs() 和 htonl()包含于<arpa/inet.h>, 参读《TLPI》P1199
  //将*port 转换成以网络字节序表示的16位整数
  name.sin_port = htons(*port);
- //INADDR_ANY是一个 IPV4通配地址的常量，大多实现都将其定义成了0.0.0.0 参读《TLPI》P1187
+ //INADDR_ANY是一个 IPV4通配地址的常量，包含于<netinet/in.h>
+ //大多实现都将其定义成了0.0.0.0 参读《TLPI》P1187
  name.sin_addr.s_addr = htonl(INADDR_ANY);
  
  //bind()用于绑定地址与 socket。参读《TLPI》P1153
