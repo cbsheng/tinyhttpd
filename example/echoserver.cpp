@@ -18,8 +18,18 @@ int main()
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	serv_addr.sin_port = htons(8123);
-	printf("bind in %s : %d\n", inet_ntoa(serv_addr.sin_addr), ntohs(serv_addr.sin_port));
 	
+	//将 inet_ntoa() 改用 inet_ntop() 这个现代方法，支持 IPV4 和 IPV6
+	//printf("bind in %s : %d\n", inet_ntoa(serv_addr.sin_addr), ntohs(serv_addr.sin_port));
+	//INET_ADDRSTRLEN 是标识 IPV4 地址展现字符串的大小常量,INET6_ADDRSTRLEN是 IPV6 的
+	char serv_ip[INET_ADDRSTRLEN];
+	if (inet_ntop(AF_INET, &serv_addr.sin_addr, serv_ip, sizeof(serv_ip)) == NULL) {
+		printf("inet_ntop error\n");
+		close(server_sock);
+		return 0;
+	}
+	
+	printf("bind in %s : %d\n", serv_ip, ntohs(serv_addr.sin_port));
 	if (bind(server_sock, (struct sockaddr*)&serv_addr, serv_addr_len) < 0) {
 		printf("bind error\n");
 		return 0;
