@@ -1,4 +1,4 @@
-/*linux socket tcp 编程示例，服务端，单进程单线程。*/
+/*linux socket AF_INET TCP 编程示例，单进程单线程，ehco 服务端*/
 #include <cstdio>
 #include <sys/socket.h>
 #include <netinet/in.h>
