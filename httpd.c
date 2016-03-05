@@ -524,7 +524,8 @@ int startup(u_short *port)
  if (bind(httpd, (struct sockaddr *)&name, sizeof(name)) < 0)
   error_die("bind");
   
- //如果调用 bind 后端口号仍然是0，则手动调用getsockname()获取端口号
+ //如果依赖系统分配端口号，则需要调用getsockname()获取端口号
+ //bind()并不会直接更新变量name(参数类型是const struct sockaddr*).
  if (*port == 0)  /* if dynamically allocating a port */
  {
   int namelen = sizeof(name);
