@@ -265,7 +265,7 @@ void execute_cgi(int client, const char *path,
   //只有 POST 方法才继续读内容
   numchars = get_line(client, buf, sizeof(buf));
   //这个循环的目的是读出指示 body 长度大小的参数，并记录 body 的长度大小。其余的 header 里面的参数一律忽略
-  //注意这里只读完 header 的内容，body 的内容没有读
+  //注意这里只读完 header 的内容，body 的内容没有读，因为按照HTTP协议格式，header 和 entity body 之间有一个空行。
   while ((numchars > 0) && strcmp("\n", buf))
   {
    buf[15] = '\0';
@@ -536,6 +536,7 @@ int startup(u_short *port)
   *port = ntohs(name.sin_port);
  }
  
+ //将socket标记为passive socket，等待之后通过accept()接受的连接.
  //最初的 BSD socket 实现中，backlog 的上限是5.参读《TLPI》P1156
  if (listen(httpd, 5) < 0) 
   error_die("listen");
@@ -586,7 +587,9 @@ int main(void)
 
  while (1)
  {
-  //阻塞等待客户端的连接，参读《TLPI》P1157
+  //accept()从listening socket的pending queue中取出头部的请求，创建一个新的用于连接的socket
+  //并返回.
+  //如果pending queue为空，则默认阻塞等待客户端的连接，参读《TLPI》P1157
   client_sock = accept(server_sock,
                        (struct sockaddr *)&client_name,
                        &client_name_len);
