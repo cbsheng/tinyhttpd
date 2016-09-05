@@ -310,7 +310,7 @@ void execute_cgi(int client, const char *path,
   //dup2()包含<unistd.h>中，参读《TLPI》P97
   //将子进程的输出由标准输出重定向到 cgi_ouput 的管道写端上
   dup2(cgi_output[1], 1);
-  //将子进程的输入由标准输入重定向到 cgi_ouput 的管道读端上
+  //将子进程的输入由标准输入重定向到 cgi_input 的管道读端上
   dup2(cgi_input[0], 0);
   //关闭 cgi_ouput 管道的读端与cgi_input 管道的写端
   close(cgi_output[0]);
