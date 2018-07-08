@@ -498,7 +498,7 @@ int startup(u_short *port) {
 
 //如果调用 bind 后端口号仍然是0，则手动调用getsockname()获取端口号
     if (*port == 0) { /* if dynamically allocating a port */
-        int namelen = sizeof(name);
+        socklen_t namelen = sizeof(name);
         //getsockname()包含于<sys/socker.h>中，参读《TLPI》P1263
         //调用getsockname()获取系统给 httpd 这个 socket 随机分配的端口号
         if (getsockname(httpd, (struct sockaddr *)&name, &namelen) == -1)
@@ -546,7 +546,7 @@ int main(void) {
     int client_sock = -1;
 //sockaddr_in 是 IPV4的套接字地址结构。定义在<netinet/in.h>,参读《TLPI》P1202
     struct sockaddr_in client_name;
-    int client_name_len = sizeof(client_name);
+    socklen_t client_name_len = sizeof(client_name);
 //pthread_t newthread;
 
     server_sock = startup(&port);

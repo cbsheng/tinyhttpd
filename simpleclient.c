@@ -1,11 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 
-int main(int argc, char *argv[]) {
+int main() {
     int sockfd;
     int len;
     struct sockaddr_in address;
